@@ -1,6 +1,6 @@
 {
   "name": "@terryweiss/logger",
-  "version": "2.2.17",
+  "version": "3.0.0",
   "description": "A logging system for my libraries.",
   "main": "dist/index.js",
   "typings": "index.d.ts",

@@ -1,19 +1,20 @@
 import { transports, createLogger, format, Logger, LeveledLogMethod } from "winston";
-import config                                                         from "@terryweiss/config";
-import * as colors                                                    from "colors/safe";
-import * as moment                                                    from "moment";
-import { isEmpty }                                                    from "lodash";
-import { inspect }                                                    from "util";
+import config from "@terryweiss/config";
+import * as colors from "colors/safe";
+import * as moment from "moment";
+import { isEmpty } from "lodash";
+import { inspect } from "util";
 
 const { SPLAT } = require( "triple-beam" );
 
 // import {format} from "logform";
 config.option( {
-	name       : "logLevel",
-	flag       : "log-level",
-	default    : "info",
+	envFlag: "LOG_LEVEL",
+	name: "logLevel",
+	flag: "log-level",
+	default: "info",
 	description: "The logging level determines how detailed the log is. Debug is the most detailed and error is tha the other where it only displays errors",
-	choices    : [ "error", "warn", "notice", "info", "trace", "debug" ]
+	choices: [ "error", "warn", "notice", "info", "trace", "debug" ]
 
 } );
 
@@ -23,23 +24,23 @@ config.option( {
  * @type {{levels: {error: number, warn: number, notice: number, info: number, trace: number, debug: number}, colors: {error: string, warn: string, notice: string, info: string,
  *     trace: string, debug: string}}}
  */
-const c2klevels = {
+const mylevels = {
 	levels: {
-		error : 0,
-		warn  : 1,
+		error: 0,
+		warn: 1,
 		notice: 2,
-		info  : 3,
-		trace : 4,
-		debug : 5
+		info: 3,
+		trace: 4,
+		debug: 5
 	},
 
 	colors: {
-		error : "red",
-		warn  : "yellow",
+		error: "red",
+		warn: "yellow",
 		notice: "green",
-		info  : "white",
-		trace : "cyan",
-		debug : "magenta"
+		info: "white",
+		trace: "cyan",
+		debug: "magenta"
 	}
 };
 
@@ -49,15 +50,15 @@ interface ILogger extends Logger {
 
 export function getLogger( name: string ): ILogger {
 	const logger = createLogger( {
-		levels: c2klevels.levels,
-		level : config.logLevel,
+		levels: mylevels.levels,
+		level: config.logLevel,
 
-		format    : format.combine(
+		format: format.combine(
 			format.ms()
 		),
 		transports: [
 			new transports.Console( {
-				format           : format.printf( ( info ) => {
+				format: format.printf( ( info ) => {
 					let color = colors.white;
 					switch ( info.level ) {
 						case "debug":
@@ -84,21 +85,21 @@ export function getLogger( name: string ): ILogger {
 
 					const params = info[ SPLAT ];
 
-					const pa = isEmpty( params ) ? "" : `\n---\n${inspect( params, {
-						depth         : 10,
-						colors        : true,
+					const pa = isEmpty( params ) ? "" : `\n---\n${ inspect( params, {
+						depth: 10,
+						colors: true,
 						maxArrayLength: 20,
-						sorted        : true
-					} )}`;
+						sorted: true
+					} ) }`;
 
-					return `${colors.blue( moment.utc().format( "L HH:mm:ss:SS" ) )} \
-${name} ${color( level )}: \
-${colors.white( message )} \
-${pa} \
-${info.ms}`;
+					return `${ colors.blue( moment.utc().format( "L HH:mm:ss:SS" ) ) } \
+${ name } ${ color( level ) }: \
+${ colors.white( message ) } \
+${ pa } \
+${ info.ms }`;
 				} ),
-				level            : config.logLevel,
-				stderrLevels     : [ "error" ],
+				level: config.logLevel,
+				stderrLevels: [ "error" ],
 				consoleWarnLevels: [ "warn" ]
 			} )
 			// new transports.Console({level: "error", format: format.errors({stack: true})})

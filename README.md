@@ -8,7 +8,7 @@ __**CC Logger**__
 # Intro
 Effective logging is critical to system maintenance both from a debugging perspective and an infrastructuture management perspective. It is tempting to just log everything when reporting on your system and its performance, but a noisy log is worse than no log because it can lead you to places that are unrelated to what you are troubleshooting. Another problem are systems that are reliant on reusable libraries and components. Being able to control those component's logs can help a great deal by allowing you to see how those libraries respond to your calls.
 
-This library attempts to solve those problems by defining a progressive filter that is applied to your logs at runtime. These can be accomodated from command line or from the environment or from a configuration file. It is based on [debug-logger](https://www.npmjs.com/package/debug-logger);
+This library attempts to solve those problems by defining a progressive filter that is applied to your logs at runtime. These can be accomodated from command line or from the environment or from a configuration file. It is based on [debug-logger](https://www.npmjs.com/package/debug-logger) (NO LONGER AS OF V3);
 
 # Installation
 ```bash
@@ -34,19 +34,10 @@ Et viola! You have logged. There are a few main concepts here. Let's look at the
 
 ## Namespaces
 Namespaces define a functional component and categorize its internam parts. The hierarchy is defined by `:` by convention, but not by rule. Here are some valid namespaces.
-    - ccsql         - A pacakge
+    - ccsql         - A package
     - ccsql:request - A package that contains module (or process) called `request`
     - ccsql:connection  - A different module (or process) called `connection`
 
-Now you want to run your system but look only output from `ccsql:request`.
-```bash
-# Linux
-DEBUG=ccsql:request node index.js
-```cmd
-REM Windows
-set DEBUG=ccsql:request & node index.js
-```
-To show all modules (or processes) run `DEBUG=ccsql:*`. This style of log filtering is from a tool called [DEBUG by VisionMedia](https://github.com/visionmedia/debug). It is a widely used component and syntax standard implemented simply and elegantly. It was intended to handle libraries/components output by allowing you to focus only on the output of a single or group of components. We call this a "namespace" (from later community developments around the core tool). This subtle shift of emphasis is allow interpretations that compose libraries or families of components together and treat them as a single logging unit. In this example `ccsql` is the namespace and `request` is the module.
 
 ## Channels
 While namespaces provide a nice vertical filter on the output, sometimes you only want to output certain types of messages. For instance if you come across an error message, you may turn on more logging to provide context. This kind of vertical filters are called "logging levels" and are as old as the hills used in inux [syslog](https://access.redhat.com/documentation/en-us/red_hat_gluster_storage/3/html/administration_guide/configuring_the_log_level) for example. It really came into its own with Java's [Log4J](https://en.wikipedia.org/wiki/Log4j). The idea is that you log to a partciular channel/topic/level (pick your term and use it at the next party) and them filter the channel using  progressive filters. We define these:
@@ -74,13 +65,6 @@ You can set the filter by command line or from the environment. The environment 
 
 You can also set this from the command line. `--log-level` accepts the same syntax as `DEBUG_LEVEL`. You can also use the NPM-like `-v`, `-vv`, `-vvv`, etc.
 
-## Static Filtering
-The `DEBUG` variable will allow you to select just one channel and report only on that. It works by adding the channel name to the `DEBUG` instance.
-
-```bash
-DEBUG=ccsql:*:info  # will show only info, not
-                    # the progressive info+warn+error
-```
 
 # Guidance
 When designing your logging strategy, start with the notion that less than 3% of your code will produce >70% of your errors. Debugging statements that you needed during development will likely be needed later when you try to figure out why it went [pear-shaped](https://www.urbandictionary.com/define.php?term=pear%20shaped) at run time. These kinds of statements are typically published on the `trace` and `debug` channels. Those channels are the noisiest and it may seem like that may not be desirable as it will pollute the logs. But recall that they only print when the filter includes them and they are essentially free because if they are filtered out (which happens at application start) `logger.debug` or `logger.trace` become no-ops and don't inflict an execution price.
@@ -110,7 +94,7 @@ Here's how you should organize your logs.
 
 
 # Building
-`cclogger` is built in Typescript and uses good ol' `make` to build. You will need these tools:
+`logger` is built in Typescript and uses good ol' `make` to build. You will need these tools:
 
 ```bash
 npm install --global typescript # with admin rights
@@ -119,7 +103,7 @@ npm install --global typedoc-plugin-external-module-name
 ```
 
 You will, of course, also need `make`. Please use the [Cygwin](https://cygwin.com/install.html) or [Swan](http://www.starlig.ht/install/) versions and make sure that the tools are in your `PATH`.
-
+Or put on some big boy pants and just run linux. Ahem.
 ```bash
 
 # build the library

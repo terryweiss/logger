@@ -1,8 +1,9 @@
 "use strict";
+process.env.LOG_LEVEL = "debug";
 const cfg = require( "@terryweiss/config" ).default;
 
-process.env.DEBUG = "ccl:*";
-process.env.DEBUG_LEVEL = "trace";
+
+
 
 const lo          = require( "../dist/" );
 // const tap         = require( "tap" );
