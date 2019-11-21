@@ -1,0 +1,34 @@
+{
+  "name": "@terryweiss/logger",
+  "version": "3.0.0",
+  "description": "A logging system for my libraries.",
+  "main": "dist/index.js",
+  "typings": "index.d.ts",
+  "scripts": {
+    "test": "tap test/"
+  },
+  "repository": "",
+  "author": "Terry Weiss",
+  "license": "MIT",
+  "dependencies": {
+    "@terryweiss/config": "^3.0.0",
+    "@terryweiss/maker": "^1.9.6",
+    "@types/lodash": "^4.14.136",
+    "@types/logform": "^1.2.0",
+    "colors": "^1.3.3",
+    "lodash": "^4.17.15",
+    "logform": "^2.1.2",
+    "moment": "^2.24.0",
+    "triple-beam": "^1.3.0",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "semver": "^6.3.0",
+    "tap": "^14.6.1",
+    "typedoc": "^0.15.0",
+    "typedoc-clarity-theme": "^1.1.0",
+    "typedoc-plugin-markdown": "^2.1.1",
+    "typescript": "^3.5.3"
+  }
+}
